@@ -5,10 +5,11 @@ import z from "zod"
 export const ItemSchema = z.object({
   name: z.string(),
   isDir: z.boolean(),
-  size: z.int()
+  size: z.int(),
+  path: z.string()
 })
 
-export type TItem = z.infer<typeof ItemSchema>
+export type Item = z.infer<typeof ItemSchema>
 
 type FetchContentsParams = {
   path: string
@@ -24,6 +25,8 @@ export async function fetchContents(params: FetchContentsParams) {
       }
     }
   )
-  return ItemSchema.array().parse(await response.json())
+  const data = await response.json()
+  console.log(data)
+  return ItemSchema.array().parse(data)
 }
 
